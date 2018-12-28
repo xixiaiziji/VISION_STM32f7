@@ -4,14 +4,8 @@
   * @author  ZHANG
   * @version V1.0
   * @date    2018-xx-xx
-  * @brief   led应用函数接口
-  ******************************************************************************
-  * @attention
-  *
-  * 实验平台:秉火  STM32 F767 开发板  
-  * 论坛    :http://www.firebbs.cn
-  * 淘宝    :http://firestm32.taobao.com
-  *
+  * @brief   API of led
+  * @Platform STM32F767
   ******************************************************************************
   */
   

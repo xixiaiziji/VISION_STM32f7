@@ -4,20 +4,17 @@
   * @author  ZHANG
   * @version V1.0
   * @date    2018-xx-xx
-  * @brief   绝缘子图像处理
-  ******************************************************************************
-  * @attention
-  *
-  * 实验平台:秉火  STM32 F767 开发板  
+  * @brief   API of insulator image processing
+  * @Platform STM32F767
   ******************************************************************************
   */
 
 #include "./process/process.h"
 #include "math.h"
 rough_t rough[MAX_LINE];
-static uint16_t label;                      //连通域标记
+static uint16_t label;                      //region labeling
 uint16_t Rough_length=0,flag_canny=0;
-uint16_t image2[480][800] __attribute__((at(IMAGE_FRAME_BUFFER)));				//轮廓图像数据定义在SDRAM中
+uint16_t image2[480][800] __attribute__((at(IMAGE_FRAME_BUFFER)));				
 uint16_t imgn[480][800]  __attribute__((at(IMGN_FRAME_BUFFER)));
 uint16_t m[480][800]  __attribute__((at((uint32_t)0xD0500000)));
 uint16_t o[480][800]  __attribute__((at((uint32_t)0xD0600000)));
@@ -43,7 +40,7 @@ uint16_t Hough[4][9] = {
 	  4 -- -- 0	x
 			  |   
     3   2   1
-    链表存放规律
+
 *------------------------------*/
 const int offset[8][2]={{1,0},{1,1},{0,1},{-1,1},
 						 {-1,0},{-1,-1},{0,-1},{1,-1}};
@@ -55,7 +52,7 @@ function:get_newimage
 description:二值化图像算法
 calls:no
 called by:no
-input:阈值
+input:TH
 output:void
 **********************************/
 void get_newimage(uint16_t thre)
@@ -63,16 +60,16 @@ void get_newimage(uint16_t thre)
 	uint16_t x=0,y=0,TH=0;
 	uint16_t Camera_Data;
 	uint32_t i,m;
-for(x=H_top; x<img_height-H_end; x++) //获得图像
+for(x=H_top; x<img_height-H_end; x++) //get image
 	 {
 		 for(y=W_top; y<img_width-W_end; y++)
 		 {
-	//for(x=0;x<img_height;x++)		//获得图像
+	//for(x=0;x<img_height;x++)		//get image
 	//{
 	//	for(y=0;y<img_width;y++)
 	//	{
 		   Camera_Data=image2[x][y]; /* 从数组读出一个像素到Camera_Data变量 */			      
-				if((Camera_Data&0x001f)>=thre)//二值化
+				if((Camera_Data&0x001f)>=thre)
 					image2[x][y]=0x0000;		
 				else
 					image2[x][y]=0xffff;		

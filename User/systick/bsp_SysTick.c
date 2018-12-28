@@ -4,12 +4,9 @@
   * @author  ZHANG
   * @version V1.0
   * @date    2018-xx-xx
-  * @brief   SysTick 系统滴答时钟10us中断函数库,中断时间可自由配置，
-  *          常用的有 1us 10us 1ms 中断。     
-  ******************************************************************************
-  * @attention
-  *
-  * 实验平台:秉火  STM32 F767 开发板
+  * @brief   API of System tick clock
+  *          often used 1us 10us 1ms      
+  * @Platform STM32F767
   ******************************************************************************
   */
   
@@ -17,11 +14,7 @@
 
 static volatile __IO u32 TimingDelay;
  
-/**
-  * @brief  启动系统滴答定时器 SysTick
-  * @param  无
-  * @retval 无
-  */
+
 void SysTick_Init(void)
 {
 	/* SystemFrequency / 1000    1ms中断一次

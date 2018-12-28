@@ -1,6 +1,0 @@
---c99 -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F7xx\Include -I ..\..\Libraries\STM32F7xx_HAL_Driver\Inc -I ..\..\User -I ..\..\User\FATFS -I ..\..\User\process
--I D:\MDK520workspace\F767版本\6.767（优化函数）\Project\RVMDK（uv5）\RTE
--I F:\MDK520\ARM\PACK\Keil\STM32F7xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include
--I F:\MDK520\ARM\CMSIS\Include
--D__UVISION_VERSION="520" -DSTM32F746xx -DUSE_HAL_DRIVER -DSTM32F746xx
--o ..\..\output\cc936.o --omf_browse ..\..\output\cc936.crf --depend ..\..\output\cc936.d "..\..\User\FATFS\option\cc936.c"

@@ -47,14 +47,14 @@ const int offset[8][2]={{1,0},{1,1},{0,1},{-1,1},
 
 
 
-/**********************************
-function:get_newimage
-description:二值化图像算法
-calls:no
-called by:no
-input:TH
-output:void
-**********************************/
+/*******************************************************
+ * @function    get_newimage
+ * @description image thresholding
+ * @calls          
+ * @calledby
+ * @input       TH
+ * @output      void
+ *******************************************************/
 void get_newimage(uint16_t thre)
 {
 	uint16_t x=0,y=0,TH=0;
@@ -79,7 +79,7 @@ for(x=H_top; x<img_height-H_end; x++) //get image
 	 {
 		 for(y=W_top; y<img_width-W_end; y++)
 		 {
-	//for(x=2;x<img_height-2;x++)				//滤波
+	//for(x=2;x<img_height-2;x++)				      //滤波
 	//{
 	//	for(y=2;y<img_width-2;y++)           //遍历周边8个像素
 		//{
@@ -129,14 +129,14 @@ for(x=H_top; x<img_height-H_end; x++) //get image
 	
 }
 
-/**********************************
-function:mylabel()
-description:连通区域标记
-calls:无
-called by:无
-input:
-output:返回区域个数及标记矩阵imgn[][]
-**********************************/
+/*******************************************************
+ * @function      mylabel()
+ * @description   region labeling
+ * @calls
+ * @calledby
+ * @input
+ * @output        return label and imgn[][]
+********************************************************/
 void labelset(uint16_t xs,uint16_t ys,uint16_t label)
 {
     uint16_t i,j,cnt,im,ip,jp,jm;
@@ -233,14 +233,14 @@ uint16_t mylabel()
 	 }
 	 return label;
 }
-/**********************************
-function:label_extract()
-description:连通区域抽取
-calls:无
-called by:无
-input:区域个数,阈值
-output:返回小于像素小于TH的矩阵image2
-**********************************/
+/***************************************************
+ * @function    label_extract()
+ * @description extract labeled region 
+ * @calls
+ * @calledby
+ * @input       label and threshold
+ * @output      return image2
+***************************************************/
 void label_extract(uint16_t cnt,uint16_t TH)
 {
   uint16_t i,j,k=0,size=0;
@@ -274,14 +274,14 @@ for(k=0; k<cnt; k++)
 	 }
  }
 }
-/**********************************
-function:trace()
-description:追踪轮廓线
-calls:无
-called by:无
-input:开始位置
-output:void
-**********************************/
+/******************************************
+ * @function      trace()
+ * @description   追踪轮廓线
+ * @calls
+ * @calledby
+ * @input         开始位置
+ * @output        void
+ ******************************************/
 float trace(uint16_t xs,uint16_t ys)
 {
 	uint16_t x=xs,y=ys,no,vec=5;
@@ -322,12 +322,13 @@ float trace(uint16_t xs,uint16_t ys)
 	 }
 }
 /************************************************
-function:find_rough
-边界跟踪法！！！
-跟踪准则：从图像的左上角逐个点扫描，遇到边缘点时顺序跟踪，直至跟踪后续点回到起始点的位置为止。
-一条线跟踪结束后，接着扫描下一个跟踪点
-判断该点是否为目标点，是则把该目标点定为新起始点，逆时针转90度作为新的跟踪方向继续监测新方向的点
-若不是目标点则顺时针转45度继续判断
+ *@function    find_rough()
+ *@description 
+   边界跟踪法！！！
+   跟踪准则：从图像的左上角逐个点扫描，遇到边缘点时顺序跟踪，直至跟踪后续点回到起始点的位置为止。
+             一条线跟踪结束后，接着扫描下一个跟踪点
+             判断该点是否为目标点，是则把该目标点定为新起始点，逆时针转90度作为新的跟踪方向继续监测新方向的点
+             若不是目标点则顺时针转45度继续判断
 *************************************************/
 void find_rough(uint16_t first_x,uint16_t first_y)
 {
@@ -405,14 +406,15 @@ void find_rough(uint16_t first_x,uint16_t first_y)
 				}
 	}
 }
-/**********************************
-function:calc_size()
-description:区域面积及重心位置
-calls:无
-called by:无
-input:标记号
-output:面积（即像素点数）
-**********************************/
+
+/******************************************
+ * @function      calc_size()
+ * @description   区域面积及重心位置
+ * @calls
+ * @calledby
+ * @input         label
+ * @output        面积（即像素点数）
+ ******************************************/
 uint16_t calc_size(uint16_t label,uint16_t *cx,uint16_t *cy)
 {
   uint16_t i,j,tx=0,ty=0,size=0;
@@ -429,14 +431,15 @@ uint16_t calc_size(uint16_t label,uint16_t *cx,uint16_t *cy)
 		ty=(uint16_t)(ty/size);
 	  return size;
 }
-/**********************************
-function:calc_length()
-description:区域周长
-calls:无
-called by:无
-input:标记号
-output:面积（即像素点数）
-**********************************/
+
+/******************************************
+ * @function      calc_length()
+ * @description   区域周长
+ * @calls
+ * @calledby
+ * @input         label
+ * @output        面积（即像素点数）
+ ******************************************/
 float calc_length(uint16_t label)
 {
 	uint16_t i,j;
@@ -454,14 +457,15 @@ float calc_length(uint16_t label)
 	 }
    return 0;
 }
-/**********************************
-function:feature()
-description:圆形度
-calls:无
-called by:无
-input:cnt(对象个数),size(面积),length(周长),ratio(圆形度),重心
-output:面积（即像素点数）
-**********************************/
+
+/*******************************************************
+ * @function      feature()
+ * @description   圆形度
+ * @calls
+ * @calledby
+ * @input         cnt(对象个数),size(面积),length(周长),ratio(圆形度),重心
+ * @output        面积（即像素点数）
+ *******************************************************/
 float feature(uint16_t label,uint16_t center_x,uint16_t center_y)
 {
 	uint16_t i,j,cx,cy;
@@ -478,14 +482,15 @@ float feature(uint16_t label,uint16_t center_x,uint16_t center_y)
 	return ratio;
 
 }
-/**********************************
-function:size_extract()
-description:根据面积范围抽取对象
-calls:无
-called by:无
-input:面积，对象个数，最大最小值
-output:void
-**********************************/
+
+/******************************************
+ * @function      size_extract()
+ * @description   根据面积范围抽取对象
+ * @calls
+ * @calledby
+ * @input         面积，对象个数，最大最小值
+ * @output        void
+ ******************************************/
 void size_extract(float size,float size_min,float size_max,uint16_t label)
 {
 	uint16_t x,y;
@@ -501,14 +506,15 @@ void size_extract(float size,float size_min,float size_max,uint16_t label)
 	 }
   }
 }
-/**********************************
-function:ratio_extract()
-description:根据圆形度范围抽取对象
-calls:无
-called by:无
-input:面积，对象个数，最大最小值
-output:void
-**********************************/
+
+/******************************************
+ * @function      ratio_extract()
+ * @description   根据面积范围抽取对象
+ * @calls
+ * @calledby
+ * @input         面积，对象个数，最大最小值
+ * @output        void
+ ******************************************/
 void ratio_extract(float ratio,float ratio_min,float ratio_max,uint16_t label)
 {
 	uint16_t x,y;
@@ -524,14 +530,15 @@ void ratio_extract(float ratio,float ratio_min,float ratio_max,uint16_t label)
 	 }
    }
 }
-/**********************************
-function:distance()
-description:测距(预先测到外接矩形根据外接矩形的宽及实际宽度测量)
-calls:无
-called by:无
-input:阈值
-output:void
-**********************************/
+
+/******************************************
+ * @function      distance()
+ * @description   测距(预先测到外接矩形根据外接矩形的宽及实际宽度测量)
+ * @calls
+ * @calledby
+ * @input         阈值
+ * @output        void
+ ******************************************/
 float distance(float r,float f,uint16_t Object_W,uint16_t MAXCOL,uint16_t MINCOL)
 {
 	//参数为像元尺寸、焦距、物距、最大最小横坐标
@@ -546,14 +553,15 @@ float distance(float r,float f,uint16_t Object_W,uint16_t MAXCOL,uint16_t MINCOL
   D=a*k-b;                     //mm实际距离：w/W=d/D;1/d+1/D=1推出
   return D;
 }
-/**********************************
-function:point()
-description:最小外接矩形的4个顶点的选取
-calls:无
-called by:无
-input:顶点数组
-output:void
-**********************************/
+
+/******************************************
+ * @function      point()
+ * @description   最小外接矩形的4个顶点的选取
+ * @calls
+ * @calledby
+ * @input         顶点数组
+ * @output        void
+ ******************************************/
 void point(uint16_t a[4])
 {
 	uint16_t i,j,b[4]={240,240,400,400};
@@ -614,14 +622,15 @@ void point2(uint16_t a[4])
 	 a[2]=b[2];    //最大横坐标
    a[3]=b[3];  	  //最小横坐标
 }
-/**********************************
-function:diagonal()
-description:抓取角度及弧度
-calls:无
-called by:无
-input:顶点数组
-output:夹角
-**********************************/
+
+/******************************************
+ * @function      diagonal()
+ * @description   抓取角度及弧度
+ * @calls
+ * @calledby
+ * @input         顶点数组
+ * @output        夹角
+ ******************************************/
 float diagonal(uint16_t a[4],float m,float n)
 {
   uint16_t i=0,j,b[400];
@@ -643,17 +652,17 @@ float diagonal(uint16_t a[4],float m,float n)
 		return diag;
 }
 /**********************************
-function:Houghtrans()
-description:Hough变换检测圆
-            (1)建立一个2维累加数组，设为a[Theta][r]
-            (2)开始设置数组a为0,然后对每个图像空间中给定的边缘点，让Theta取遍Theta轴上所有可能值
-               并根据R=x*cos(theta)+y*sin(theta)算出R
-            (3)再根据Theta和R的值(整数化后),对a进行累加a[theta][r]++,累加结束后，根据theta和R的值
-               可知多少点共线，即a[theta][r]的值，同蕋heta和r也给出了直线方程参数
-calls:无
-called by:无
-input:阈值
-output:void
+ *@function     Houghtrans()
+ *@description  Hough变换检测圆
+               (1)建立一个2维累加数组，设为a[Theta][r]
+               (2)开始设置数组a为0,然后对每个图像空间中给定的边缘点，让Theta取遍Theta轴上所有可能值
+                  并根据R=x*cos(theta)+y*sin(theta)算出R
+               (3)再根据Theta和R的值(整数化后),对a进行累加a[theta][r]++,累加结束后，根据theta和R的值
+                  可知多少点共线，即a[theta][r]的值，同蕋heta和r也给出了直线方程参数
+ *@calls
+ *@calledby
+ *@input        阈值
+ *@output       void
 **********************************/
 void HoughTrans()  
     {  
@@ -761,14 +770,15 @@ for(i=2;i<img_height-2;i++)
    }
 }
 
-/**********************************
-function:canny_process()
-description:canny算子边缘检测
-calls:无
-called by:无
-input:阈值
-output:void
-**********************************/
+
+/******************************************
+ * @function      canny_process()
+ * @description   canny算子边缘检测
+ * @calls
+ * @calledby
+ * @input         阈值
+ * @output        void
+ ******************************************/
 void canny_process(uint16_t thre)	
 {
 	
@@ -922,14 +932,15 @@ for(x=2;x<img_height-1;x++)
      }
   } 
 }
-/**********************************
-function:log_process()
-description:LOG算子边缘检测
-calls:无
-called by:无
-input:阈值
-output:void
-**********************************/
+
+/******************************************
+ * @function      log_process()
+ * @description   LOG算子边缘检测
+ * @calls
+ * @calledby
+ * @input         阈值
+ * @output        void
+ ******************************************/
 void log_process(uint16_t thre)
 {
 uint16_t a,b,t,c1,c2,c3,c4,c5,c6,c7,c8,c9,fxr;
@@ -1032,14 +1043,15 @@ for (a=2;a<=img_height-2;a++)
   //   }
  // } 
 }
-/**********************************
-function: otsuThreshold()
-description: otsu自动阈值选取算法
-calls: 无
-called by: 无
-input: void
-return: 16位的阈值
-**********************************/		
+
+/******************************************
+ * @function      otsuThreshold()
+ * @description   otsu自动阈值选取算法
+ * @calls
+ * @calledby
+ * @input         
+ * @output        16位的阈值
+ ******************************************/
 uint16_t otsuThreshold()
 {
     const uint16_t GrayScale=0x001f;//2^5=32级灰度级
@@ -1089,14 +1101,15 @@ uint16_t otsuThreshold()
 
     return threshold;
 }
-/**********************************
-function: OET()
-description: 最大熵自动阈值选取算法
-calls: 无
-called by: 无
-input: void
-return: 16位的阈值
-**********************************/		
+	
+/******************************************
+ * @function      OET()
+ * @description   最大熵自动阈值选取算法
+ * @calls
+ * @calledby
+ * @input         
+ * @output        16位的阈值
+ ******************************************/
 uint16_t OET()
 {
 	  const uint16_t GrayScale_2=0x001f;//2^5=32级灰度级
@@ -1146,14 +1159,15 @@ uint16_t OET()
     } 
  return threshold;
 }
-/**********************************
-function: MeanFilterOper()
-description: 加权均高斯滤玻(灰度图)---模糊处理
-calls: 无
-called by: 无
-input: void
-return: void
-**********************************/	
+
+/******************************************
+ * @function      MeanFilterOper()
+ * @description   加权均高斯滤玻(灰度图)---模糊处理
+ * @calls
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/
 void MeanFilterOper()
 {
 	uint16_t x,y,i[9],t=0;
@@ -1187,14 +1201,15 @@ void MeanFilterOper()
 
 		}
 	}
-/**********************************
-function: KNNFilterOper()
-description: K近邻均值滤波(灰度图)k选5
-calls: 无
-called by: 无
-input: void
-return: void
-**********************************/	
+
+/******************************************
+ * @function      KNNFilterOper()
+ * @description   K近邻均值滤波(灰度图)k选5
+ * @calls
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 void KNNFilterOper()
 {
 	uint16_t x,y,z,j,i[8],k[8],t=0,temp=0;
@@ -1248,14 +1263,15 @@ void KNNFilterOper()
 
 		}
 }
-/**********************************
-function: MedianFilterOper()
-description: 灰度图像的中值滤波 3*3---模糊处理
-calls: maopao()
-called by: 无
-input: void
-return: void
-**********************************/		
+
+/******************************************
+ * @function      MedianFilterOper()
+ * @description   灰度图像的中值滤波 3*3---模糊处理
+ * @calls         maopao()
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 void MedianFilterOper()
 {
 	uint16_t x,y,i[9];
@@ -1277,21 +1293,22 @@ void MedianFilterOper()
 		}
 	}
 }
-/**********************************
-function: Hist_plane()
-description: 直方图均衡化
-calls: sort(),weight()
-called by: 无
-input: void
-return: void
-**********************************/	
+
+/******************************************
+ * @function      Hist_plane()
+ * @description   直方图均衡化
+ * @calls         sort(),weight()
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 void Hist_plane()
 {
     uint16_t i,j;
     uint16_t hist[0x001f];          //灰度直方图
-    float histPDF[0x001f];    //归一化直方图
-	  float histCDF[0x001f];    //累积直方图
-	  uint16_t histEQU[0x001f];    //直方图均衡化
+    float histPDF[0x001f];          //归一化直方图
+	  float histCDF[0x001f];          //累积直方图
+	  uint16_t histEQU[0x001f];       //直方图均衡化
 		uint16_t size=img_width*img_height;
   
     //灰度直方图  
@@ -1341,14 +1358,15 @@ void Hist_plane()
     } 
 	  
 }
-/**********************************
-function: Dilation()
-description: 膨胀运算
-calls: 无
-called by: 无
-input: void
-return: void
-**********************************/	
+
+/******************************************
+ * @function      Dilation()
+ * @description   膨胀运算
+ * @calls         
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 void Dilation()
 {
  uint16_t i,j,m,n,flag; 
@@ -1401,14 +1419,14 @@ void Dilation()
     }
 }
 
-/**********************************
-function: Erodation(void)
-description: 腐蚀运算
-calls: 无
-called by: 无
-input: void
-return: void
-**********************************/	
+/******************************************
+ * @function      Erodation()
+ * @description   腐蚀运算
+ * @calls         
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 void Erodation()
 {
     uint16_t i,j,m,n,flag; 
@@ -1460,41 +1478,44 @@ void Erodation()
         }
     }
 }
-/**********************************
-function: close()
-description: 闭运算（先膨胀再腐蚀）去除暗细节部分
-calls: 无
-called by: 无
-input: void
-return: void
-**********************************/	
+
+/******************************************
+ * @function      close()
+ * @description   闭运算（先膨胀再腐蚀）去除暗细节部分
+ * @calls         
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 void close()
 {
   	Dilation();
 		Erodation();
 	
 }
-/**********************************
-function: open()
-description: 开运算（先腐蚀再膨胀）去除较小亮细节
-calls: 无
-called by: 无
-input: void
-return: void
-**********************************/	
+
+/******************************************
+ * @function      open()
+ * @description   开运算（先腐蚀再膨胀）去除较小亮细节
+ * @calls         
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 void open()
 {
     Dilation();
 		Erodation();
 }
-/**********************************
-function: MedianFilterOper()
-description: 冒泡排序(由小到大)
-calls: maopao()
-called by: 无
-input: void
-return: void
-**********************************/		
+
+/******************************************
+ * @function      maopao()
+ * @description   冒泡排序(由小到大)
+ * @calls         
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 void maopao(uint16_t a[],uint16_t n)  
 {   
     uint16_t flag=0,i,j,t; 
@@ -1514,14 +1535,14 @@ void maopao(uint16_t a[],uint16_t n)
     }  
 } 
 
-/**********************************
-function: my_abs()
-description: 求绝对值
-calls: 无
-called by: 无
-input: double a
-return: double |a|
-**********************************/		
+/******************************************
+ * @function      my_abs()
+ * @description   求绝对值
+ * @calls         
+ * @calledby
+ * @input         double a
+ * @output        double |a|
+ ******************************************/	
 double my_abs(double a)
 {
 	if(a<0)
@@ -1529,12 +1550,15 @@ double my_abs(double a)
 	else
 		return a;
 }
-/**********************************
-function:fun()
-description:求x的n次方函数
-calls:find_rough
-called by:no
-**********************************/
+
+/******************************************
+ * @function      fun()
+ * @description   求x的n次方函数
+ * @calls         find_rough  
+ * @calledby
+ * @input         double x, uint16_t n
+ * @output        x的n次方函数
+ ******************************************/	
 double fun(double x, uint16_t n)      
 {
    uint16_t i;
@@ -1546,12 +1570,15 @@ double fun(double x, uint16_t n)
    sum=1;
    return sum;
 }
-/**********************************
-function:max()min()
-description:最大最小值函数
-calls:a[]
-called by:no
-**********************************/
+
+/******************************************
+ * @function      max()min()
+ * @description   最大最小值函数
+ * @calls         a[]
+ * @calledby
+ * @input         
+ * @output        void
+ ******************************************/	
 uint16_t Max(uint16_t a[],uint16_t N)
 {
 		uint16_t t=a[0],i;
@@ -1570,14 +1597,15 @@ uint16_t Min(uint16_t a[],uint16_t N)
 	   }
 		return t;
 } 
-/**********************************
-function: RGB565_to_Gray()
-description: RGB565格式转灰度图像(RGB565格式显示)
-calls: 无
-called by: 无
-input: uint16_t RGB565
-return: uint16_t GRAY
-**********************************/		
+	
+/******************************************
+ * @function      RGB565_to_Gray()
+ * @description   RGB565格式转灰度图像(RGB565格式显示)
+ * @calls         
+ * @calledby
+ * @input         uint16_t RGB565
+ * @output        uint16_t GRAY
+ ******************************************/	
 uint16_t RGB565_to_Gray(uint16_t rgb_565)
 {
 		uint16_t t;	
@@ -1589,14 +1617,14 @@ uint16_t RGB565_to_Gray(uint16_t rgb_565)
 		return (t<<11)|(t<<6)|t;	
 } 
 
-/**********************************
-function: GET8Gray()
-description: 16位RGB565格式转8位灰度
-calls: 无
-called by: 无
-input: uint16_t RGB565
-return: uint8_t GRAY
-**********************************/		
+/******************************************
+ * @function      GET8Gray()
+ * @description   16位RGB565格式转8位灰度
+ * @calls         
+ * @calledby
+ * @input         uint16_t RGB565
+ * @output        uint8_t GRAY
+ ******************************************/	
 uint8_t GET8Gray(uint16_t rgb_565)
 {  
 		uint8_t R,G,B;
@@ -1607,17 +1635,17 @@ uint8_t GET8Gray(uint16_t rgb_565)
 		Gray = (uint8_t)((R*299 + G*587 + B*114)/1000);
 		return Gray;
 }
-/**********************************
-function: GET8Gray()
-description: 16位RGB565格式图像转换为24位rgb888
-calls: 无
-called by: 无
-input: uint16_t RGB565
-return: uint32_t RGB888
-other: 16bit RGB656 R4 R3 R2 R1 R0 G5 G4 G3 G2 G1 G0 B4 B3 B2 B1 B0
-       24ibt RGB888 R4 R3 R2 R1 R0 R2 R1 R0 G5 G4 G3 G2 G1 G0 G1 G0 B4 B3 B2 B1 B0 B2 B1 B0
-**********************************/
 
+/******************************************
+ * @function      GET8Gray()
+ * @description   16位RGB565格式图像转换为24位rgb888
+ * @calls         
+ * @calledby
+ * @input         uint16_t RGB565
+ * @output        uint32_t RGB888
+ * @other         16bit RGB656 R4 R3 R2 R1 R0 G5 G4 G3 G2 G1 G0 B4 B3 B2 B1 B0
+                  24ibt RGB888 R4 R3 R2 R1 R0 R2 R1 R0 G5 G4 G3 G2 G1 G0 G1 G0 B4 B3 B2 B1 B0 B2 B1 B0
+ ******************************************/	
 uint32_t rgb565_2_rgb888(uint16_t RGB_565)  
 {   
 	  uint8_t R2R1R0,G1G0,B2B1B0,rgb888_R,rgb888_G,rgb888_B;
@@ -1635,15 +1663,15 @@ uint32_t rgb565_2_rgb888(uint16_t RGB_565)
 		 
 		return RGB_888;
 }  
-/**********************************
-function: rgb888_2_rgb565()
-description: 24位rgb888转换为16位RGB565格式
-calls: 无
-called by: 无
-input: uint32_t RGB888
-return: uint16_t RGB565
-**********************************/		
-
+	
+/******************************************
+ * @function      rgb888_2_rgb565()
+ * @description   24位rgb888转换为16位RGB565格式
+ * @calls         
+ * @calledby
+ * @input         uint32_t RGB888
+ * @output        uint16_t RGB565
+ ******************************************/	
 uint16_t rgb888_2_rgb565(uint32_t rgb888)  
 {   
 		uint16_t rgb565_R,rgb565_G,rgb565_B;
